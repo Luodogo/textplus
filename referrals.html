@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Referrals</title>
+    <link rel="stylesheet" href="css/referrals.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Referrals</h1>
+        <div class="card">
+            <h2>Your Downlines</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Username</th>
+                        <th>Phone Number</th>
+                        <th>Level</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody id="downlinesTableBody">
+                    <!-- Downline rows will be dynamically added here -->
+                </tbody>
+            </table>
+        </div>
+
+        <nav>
+            <button onclick="navigate('dashboard.html')">Dashboard</button>
+            <button onclick="navigate('withdraw.html')">Withdraw</button>
+        </nav>
+    </div>
+
+    <script>
+        const downlines = [
+            { username: 'user1', phone: '0700000001', level: 'Level 1', status: 'Active' },
+            { username: 'user2', phone: '0700000002', level: 'Level 2', status: 'Inactive' },
+            { username: 'user3', phone: '0700000003', level: 'Level 3', status: 'Active' }
+        ];
+
+        function populateDownlinesTable() {
+            const tableBody = document.getElementById('downlinesTableBody');
+            downlines.forEach(downline => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${downline.username}</td>
+                    <td>${downline.phone}</td>
+                    <td>${downline.level}</td>
+                    <td>${downline.status}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+        function navigate(page) {
+            window.location.href = page;
+        }
+
+        window.addEventListener('load', populateDownlinesTable);
+    </script>
+</body>
+</html>
+

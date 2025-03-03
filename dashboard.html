@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="css/dashboard.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Dashboard</h1>
+        <div class="card">
+            <h2>Welcome, <span id="username_display"></span>!</h2>
+            <p>Status: <span id="status">Active</span></p>
+            <p>Balance: <span id="balance"> 0 KES</span></p>
+
+            <p>Your referral link: <br><span id="referral_link">http://example.com/signup?ref=<span id="referral_code"></span></span> 
+                <button class="button" onclick="copyToClipboard('referral_link')">Copy</button>
+            </p>
+        </div>
+
+        <nav>
+            <button onclick="navigate('referrals.html')">Referrals</button>
+            <button onclick="navigate('withdraw.html')">Withdraw</button>
+        </nav>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get('username');
+        document.getElementById('username_display').textContent = username;
+        document.getElementById('referral_code').textContent = username; // Assume referral code is the username
+
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('Referral link copied to clipboard!');
+        }
+
+        function navigate(page) {
+            window.location.href = page;
+        }
+
+        // Assume balance is stored in local storage
+        const balance = localStorage.getItem('balance') || '0 KES';
+        document.getElementById('balance').textContent = balance;
+
+        // Function to add referral commissions to balance
+        function addReferralCommissions(level1, level2, level3) {
+            let currentBalance = parseInt(localStorage.getItem('balance')) || 0;
+            currentBalance += level1 + level2 + level3;
+            localStorage.setItem('balance', `${currentBalance} KES`);
+            document.getElementById('balance').textContent = `${currentBalance} KES`;
+        }
+
+        // Simulate balance update when downlines activate their accounts
+        window.addEventListener('load', function() {
+            // Check if user has referred someone who activated their account
+            const hasReferredActiveUser = localStorage.getItem('hasReferredActiveUser') || false;
+            if (hasReferredActiveUser) {
+                // Example: Level 1 earns 100 KES, Level 2 earns 30 KES, Level 3 earns 10 KES
+                addReferralCommissions(100, 30, 10);
+            } else {
+                localStorage.setItem('balance', '0 KES');
+                document.getElementById('balance').textContent = '0 KES';
+            }
+        });
+
+        // Simulate referral activation (for testing purposes)
+        function simulateReferralActivation() {
+            localStorage.setItem('hasReferredActiveUser', true);
+        }
+
+        // For testing, call this function to simulate a referral activation
+        // simulateReferralActivation();
+    </script>
+</body>
+</html>
+
+
+

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activation</title>
+    <link rel="stylesheet" href="css/activation.css">
+</head>
+<body>
+    <h1>Account Activation</h1>
+    <p>Welcome, <span id="username_display"></span>!</p>
+    <p>Please pay the activation fee of 200 KES to the number below to activate your account.</p>
+    <p>Payment Number: <span id="payment_number">0707347189</span> 
+        <button1 type="button" onclick="copyToClipboard('payment_number')">Copy</button1>
+    </p>
+    <p>Payment Name: Owuor Okoth</p>
+
+    <form id="activationForm">
+        <label for="mpesacode">Enter M-Pesa Code:</label>
+        <input type="text" id="mpesacode" name="mpesacode" required><br><br>
+        <button type="submit">Validate</button>
+    </form>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const username = urlParams.get('username');
+        document.getElementById('username_display').textContent = username;
+
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).textContent;
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            alert('Payment number copied to clipboard!');
+        }
+
+        document.getElementById('activationForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const mpesacode = document.getElementById('mpesacode').value;
+
+            // Validate the M-Pesa code (this would be done on the server in a real application)
+            if (mpesacode === '123456') { // Example validation code
+                // Redirect to the dashboard
+                window.location.href = `dashboard.html?username=${username}`;
+            } else {
+                alert('Invalid M-Pesa code!');
+            }
+        });
+    </script>
+</body>
+</html>
+
+
+
